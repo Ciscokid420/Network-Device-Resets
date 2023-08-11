@@ -1,0 +1,61 @@
+# $language = "python"
+# $interface = "1.0"
+
+# ResetSwitch.py
+
+# Works with Cisco.
+
+
+
+# Decription
+#CREDIT GOES TO REDDIT USER robschn FOR THE BASE OF THIS I EDDITED THE SCRIPT TO WORK WITH MORE THAN THE SPECIFIED DEVICES
+#HOLD THE MODE BUTTON ON THE SWITCH TO TRIGGER IT TO GO INTO THE ROMMON MODE THE SCRIPT WILL DO THE REST
+#ITS AN INFINITE LOOP SO SET EM UP AND GET EM ERASED QUICK
+#THIS SCRIPT IS FOR SECURECRT. I HAVE NOT TESETED IT ON OTHER APPLICATIONS
+
+# Starts loop
+while True :
+
+    # Script will look for this to stop flash from initializing
+    initPrompt = "flash_init"
+
+    # Script will look for this to issue commands
+    swPrompt = "switch:"
+
+    # Script will look for this to enter "y" when prompted
+    ynPrompt = " (y/n)?"
+    
+    #Script will look for config .text deleted and boot
+    #bootswitch = "File'flash:config.text' deleted"
+    # Using GetScriptTab() will make this script 'tab safe'
+    objTab = crt.GetScriptTab()
+    objTab.Screen.Synchronous = True
+    objTab.Screen.IgnoreEscape = True
+
+    # Wait for initPrompt then send break command to enter ROMMON
+    objTab.Screen.WaitForString(initPrompt)
+    objTab.Screen.SendSpecial("TN_BREAK")
+    objTab.Screen.SendSpecial("TN_BREAK") # sending this twice to make sure it takes
+
+    # Wait for swPrompt then initalize flash
+    objTab.Screen.WaitForString(swPrompt)
+    objTab.Screen.Send("flash_init" + "\n" + "\n") #sending \n twice advances the screen
+
+    # Wait for swPrompt then send enter command
+    objTab.Screen.WaitForString(swPrompt)
+    objTab.Screen.Send("del " + "flash:" + "vlan.dat" + "\n")
+
+    # Wait for ynPrompt then send enter command
+    objTab.Screen.WaitForString(ynPrompt)
+    objTab.Screen.Send("y" + "\n")
+
+    # Wait for swPrompt then send enter command
+    objTab.Screen.WaitForString(swPrompt)
+    objTab.Screen.Send("del " + "flash:" + "config.text" + "\n")
+
+    # Wait for ynPrompt then send enter command
+    objTab.Screen.WaitForString(ynPrompt)
+    objTab.Screen.Send("y" + "\n")
+    #Boots the switch to check that it is wiped
+    objTab.Screen.WaitForString(swPrompt)
+    objTab.Screen.Send("boot" + "\n")
