@@ -2,6 +2,8 @@
 # $interface = "1.0"
 #THis script was tested on a Juniper EX4200 switch using SecureCRT 
 #to push the python script to the switch. 
+# YOU WILL NOT HAVE A FINSH PROMPT YOU MUST PAY ATTENTION 
+# I will update in the future to have a prompt to tell you that its done. 
 
 #Sets Variable of admPW so that the loop can cycle between safe-mode and regular boot mode
 admPW = 0
