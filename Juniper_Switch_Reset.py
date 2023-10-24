@@ -1,13 +1,9 @@
 # $language = "python"
 # $interface = "1.0"
-#THis script was tested on a Juniper EX4200 switch using SecureCRT 
-#to push the python script to the switch. 
-# YOU WILL NOT HAVE A FINSH PROMPT YOU MUST PAY ATTENTION 
-# I will update in the future to have a prompt to tell you that its done. 
 
-#Sets Variable of admPW so that the loop can cycle between safe-mode and regular boot mode
+
+
 admPW = 0
-
 #Starts the infinite Loop for the script
 while True:
 
@@ -43,6 +39,11 @@ while True:
             objTab.Screen.Send("con" + "\n")
         else:
             break
+    #format_complete = 0
+    #if format_complete == 0:
+        #format_message = "FORMAT UNDER WAY"
+        #crt.Dialog.MessageBox(format_message)
+           
  #Waits for the root prompt to pop up and sends the configure command       
     objTab.Screen.WaitForStrings(prompts)
     #objTab.Screen.WaitForStrings(rootPrompt)
@@ -74,6 +75,8 @@ while True:
         lgnPrompt = "login:"
         pwPrompt = "Password:"
         rootPrompt = "root@"
+        rebootPrompt = "Rebooting..."
+        resetPrompt = "FLASH:"
 #looks for the login prompt and logs into switch
         objTab.Screen.WaitForString(lgnPrompt)
         objTab.Screen.Send("root" + "\n")
@@ -87,4 +90,13 @@ while True:
         objTab.Screen.Send("request system zeroize" + "\n")
         objTab.Screen.Send("y" + "\n")
 #Sets the admPW to 0 so that the above loop will stop and the first loop will begin.         
-        admPW -= 1
+        
+        #this IF statement is to create a popup box for the people who are not watching
+        #the screen. There will be a popup that says uplug switch to indicate that the reset is finished.
+        format_complete = objTab.Screen.ReadString(rebootPrompt) 
+        if format_complete: 
+            message = "Reformat Complete Please Uplug the Switch"
+            crt.Dialog.MessageBox(message)
+            admPW-=1
+        
+        
