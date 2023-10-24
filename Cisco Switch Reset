@@ -3,15 +3,14 @@
 
 # ResetSwitch.py
 
-# Works with Cisco.
+# Works with Cisco. Tested on:
+#   2960X
+#   3560CX
 
-
-
-# Decription
-#CREDIT GOES TO REDDIT USER robschn FOR THE BASE OF THIS I EDDITED THE SCRIPT TO WORK WITH MORE THAN THE SPECIFIED DEVICES
-#HOLD THE MODE BUTTON ON THE SWITCH TO TRIGGER IT TO GO INTO THE ROMMON MODE THE SCRIPT WILL DO THE REST
-#ITS AN INFINITE LOOP SO SET EM UP AND GET EM ERASED QUICK
-#THIS SCRIPT IS FOR SECURECRT. I HAVE NOT TESETED IT ON OTHER APPLICATIONS
+# Decription:
+# 	This script when ran with SecureCRT will reset a switch from ROMMON mode.
+#   The script will wait for outputs from the switch, so it can be ran
+#	continuously while you change from switch to switch.
 
 # Starts loop
 while True :
@@ -25,7 +24,7 @@ while True :
     # Script will look for this to enter "y" when prompted
     ynPrompt = " (y/n)?"
     
-    #Script will look for config .text deleted and boot
+    #Script will look for conig .text deleted and boot
     #bootswitch = "File'flash:config.text' deleted"
     # Using GetScriptTab() will make this script 'tab safe'
     objTab = crt.GetScriptTab()
@@ -43,7 +42,7 @@ while True :
 
     # Wait for swPrompt then send enter command
     objTab.Screen.WaitForString(swPrompt)
-    objTab.Screen.Send("del " + "flash:" + "vlan.dat" + "\n")
+    objTab.Screen.Send("del flash:vlan.dat" + "\n")
 
     # Wait for ynPrompt then send enter command
     objTab.Screen.WaitForString(ynPrompt)
@@ -56,6 +55,7 @@ while True :
     # Wait for ynPrompt then send enter command
     objTab.Screen.WaitForString(ynPrompt)
     objTab.Screen.Send("y" + "\n")
-    #Boots the switch to check that it is wiped
+
     objTab.Screen.WaitForString(swPrompt)
+    objTab.Screen.SendSpecial("TN_BREAK")
     objTab.Screen.Send("boot" + "\n")
